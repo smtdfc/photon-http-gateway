@@ -81,19 +81,21 @@ func (g *Gateway) handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (g *Gateway) Start() error {
-	var port string 
-	if g.config.Port != "" {
-		port = g.config.Port
-	}else{
-		port = "3000"
-	}
+    var port string
+    if g.config.Port != "" {
+        port = g.config.Port
+    } else {
+        port = "3000"
+    }
 
-	http.HandleFunc("/", g.handler)
-	fmt.Println("Http server is running http://localhost:" + port)
-	err := http.ListenAndServe(":"+port, nil)
-	if err != nil {
-		fmt.Println("Error when starring Http server:", err)
-		return err
-	}
-	return nil
+    mux := http.NewServeMux()       
+    mux.HandleFunc("/", g.handler)
+
+    fmt.Println("Http server is running http://localhost:" + port)
+    err := http.ListenAndServe(":"+port, mux)
+    if err != nil {
+        fmt.Println("Error when starting Http server:", err)
+        return err
+    }
+    return nil
 }

@@ -14,7 +14,7 @@ type Config struct {
 
 func Middleware(cfg Config) func(ctx core.HttpContext) {
     return func(ctx core.HttpContext) {
-        origin := ctx.GetHeader("Origin")
+        origin := ctx.Header("Origin")
 
         allowOrigin := ""
         for _, o := range cfg.AllowedOrigins {
@@ -35,7 +35,7 @@ func Middleware(cfg Config) func(ctx core.HttpContext) {
         }
 
         if ctx.Method() == "OPTIONS" {
-            ctx.SetStatus(200)
+            ctx.Status(200)
             ctx.Abort()
             return
         }
