@@ -1,8 +1,8 @@
 package httpGateway
 
 import (
-	"github.com/smtdfc/photon/core"
-	"github.com/smtdfc/photon/logger"
+	"github.com/smtdfc/photon/v2/core"
+	"github.com/smtdfc/photon/v2/logger"
 )
 
 type Scope struct {

@@ -1,7 +1,7 @@
 package httpGateway
 
 import (
-	"github.com/smtdfc/photon/core"
+	"github.com/smtdfc/photon/v2/core"
 	"net/url"
 	"strings"
 )

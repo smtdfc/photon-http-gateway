@@ -1,45 +1,45 @@
 package cors
 
 import (
-    "github.com/smtdfc/photon/core"
-    "strings"
+	"github.com/smtdfc/photon/v2/core"
+	"strings"
 )
 
 type Config struct {
-    AllowedOrigins   []string
-    AllowedMethods   []string
-    AllowedHeaders   []string
-    AllowCredentials bool
+	AllowedOrigins   []string
+	AllowedMethods   []string
+	AllowedHeaders   []string
+	AllowCredentials bool
 }
 
 func Middleware(cfg Config) func(ctx core.HttpContext) {
-    return func(ctx core.HttpContext) {
-        origin := ctx.Header("Origin")
+	return func(ctx core.HttpContext) {
+		origin := ctx.Header("Origin")
 
-        allowOrigin := ""
-        for _, o := range cfg.AllowedOrigins {
-            if o == "*" || o == origin {
-                allowOrigin = o
-                break
-            }
-        }
+		allowOrigin := ""
+		for _, o := range cfg.AllowedOrigins {
+			if o == "*" || o == origin {
+				allowOrigin = o
+				break
+			}
+		}
 
-        if allowOrigin != "" {
-            ctx.SetHeader("Access-Control-Allow-Origin", allowOrigin)
-            ctx.SetHeader("Access-Control-Allow-Methods", strings.Join(cfg.AllowedMethods, ", "))
-            ctx.SetHeader("Access-Control-Allow-Headers", strings.Join(cfg.AllowedHeaders, ", "))
+		if allowOrigin != "" {
+			ctx.SetHeader("Access-Control-Allow-Origin", allowOrigin)
+			ctx.SetHeader("Access-Control-Allow-Methods", strings.Join(cfg.AllowedMethods, ", "))
+			ctx.SetHeader("Access-Control-Allow-Headers", strings.Join(cfg.AllowedHeaders, ", "))
 
-            if cfg.AllowCredentials {
-                ctx.SetHeader("Access-Control-Allow-Credentials", "true")
-            }
-        }
+			if cfg.AllowCredentials {
+				ctx.SetHeader("Access-Control-Allow-Credentials", "true")
+			}
+		}
 
-        if ctx.Method() == "OPTIONS" {
-            ctx.Status(200)
-            ctx.Abort()
-            return
-        }
+		if ctx.Method() == "OPTIONS" {
+			ctx.Status(200)
+			ctx.Abort()
+			return
+		}
 
-        ctx.Next()
-    }
+		ctx.Next()
+	}
 }
